@@ -21,6 +21,7 @@
             border-radius: 8px;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
             width: 300px;
+            margin: 10px;
         }
         input, button {
             padding: 10px;
@@ -33,42 +34,53 @@
     </style>
 </head>
 <body>
+    <!-- Calculadora de $ a Bs -->
     <div class="calculator">
-        <h2>Cotizador de pesos a bolivianos</h2>
-        <input type="text" id="inputValue" placeholder="Ingresa un valor" oninput="formatInputValue()" />
-        <button onclick="calculate()">Cotizar</button>
-        <p id="divisionResult"></p>
-        <p id="finalResult"></p>
+        <h2>De Pesos Argentinos a Bolivianos</h2>
+        <input type="text" id="inputDollarToBs" placeholder="Ingresa monto en $" oninput="formatInput('inputDollarToBs')" />
+        <button onclick="calculateDollarToBs()">Cotizar</button>
+        <p id="dollarToBsResult"></p>
+    </div>
+
+    <!-- Calculadora de Bs a $ -->
+    <div class="calculator">
+        <h2>De Bolivianos a Pesos Argentinos</h2>
+        <input type="text" id="inputBsToDollar" placeholder="Ingresa monto en Bs" oninput="formatInput('inputBsToDollar')" />
+        <button onclick="calculateBsToDollar()">Cotizar</button>
+        <p id="bsToDollarResult"></p>
     </div>
 
     <script>
         // Función para formatear el valor de entrada con separadores de miles
-        function formatInputValue() {
-            const input = document.getElementById('inputValue');
-            // Remover cualquier carácter no numérico excepto puntos y comas
+        function formatInput(inputId) {
+            const input = document.getElementById(inputId);
             const value = input.value.replace(/\D/g, '');
-            // Agregar separadores de miles
             input.value = new Intl.NumberFormat('es-ES').format(value);
         }
 
-        function calculate() {
-            // Obtiene el valor ingresado sin separadores de miles
-            const inputValue = parseFloat(document.getElementById('inputValue').value.replace(/\./g, ''));
-
-            // Verifica si el valor ingresado es válido
+        // Conversión de Dólares a Bolivianos (dividir por 1300, multiplicar por 9.10)
+        function calculateDollarToBs() {
+            const inputValue = parseFloat(document.getElementById('inputDollarToBs').value.replace(/\./g, ''));
             if (isNaN(inputValue)) {
                 alert('Por favor ingresa un valor numérico');
                 return;
             }
+            const result = (inputValue / 1300) * 9.10;
+            document.getElementById('dollarToBsResult').textContent = `Bolivianos Bs: ${result.toLocaleString('es-ES', { minimumFractionDigits: 2 })}`;
+        }
 
-            // Realiza la división y la multiplicación
-            const divisionResult = inputValue / 1300;
-            const finalResult = divisionResult * 9.10;
-
-            // Muestra los resultados en la página con separador de miles
-            document.getElementById('divisionResult').textContent = `Dólares $: ${divisionResult.toLocaleString('es-ES', { minimumFractionDigits: 2 })}`;
-            document.getElementById('finalResult').textContent = `Bolivianos Bs: ${finalResult.toLocaleString('es-ES', { minimumFractionDigits: 2 })}`;
+        // Conversión de Bolivianos a Dólares (dividir por 10.4, multiplicar por 1200)
+        function calculateBsToDollar() {
+            const inputValue = parseFloat(document.getElementById('inputBsToDollar').value.replace(/\./g, ''));
+            if (isNaN(inputValue)) {
+                alert('Por favor ingresa un valor numérico');
+                return;
+            }
+            const result = (inputValue / 10.4) * 1240;
+            document.getElementById('bsToDollarResult').textContent = `Dólares $: ${result.toLocaleString('es-ES', { minimumFractionDigits: 2 })}`;
         }
     </script>
 </body>
+</html>
+
 </html>
